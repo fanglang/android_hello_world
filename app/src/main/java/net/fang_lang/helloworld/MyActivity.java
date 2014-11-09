@@ -1,7 +1,10 @@
 package net.fang_lang.helloworld;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.preference.DialogPreference;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +21,35 @@ public class MyActivity extends Activity {
     }
 
     public void btnSend_onClick(View view) {
-        EditText txtName = (EditText)findViewById(R.id.txtName);
+        final EditText txtName = (EditText)findViewById(R.id.txtName);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("ダイアログのテスト")
+            .setMessage(String.format("こんにちは、%sさん！！", txtName.getText()))
+            .setPositiveButton("はい",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        _showName(txtName);
+                    }
+                }
+            )
+            .setNegativeButton("いいえ",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        _showAnonymousName();
+                    }
+                }
+            )
+            .show();
+    }
+
+    public void _showName(EditText txtName) {
         TextView txtResult = (TextView)findViewById(R.id.txtResult);
         txtResult.setText(String.format("こんにちは、%sさん！！", txtName.getText()));
+    }
+
+    public void _showAnonymousName() {
+        TextView txtResult = (TextView)findViewById(R.id.txtResult);
+        txtResult.setText("誰だ！貴様は！！");
     }
 
     @Override
